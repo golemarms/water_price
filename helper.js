@@ -1,3 +1,5 @@
+let exports = {};
+
 function my_round(n, dec_places=2) {
     return +(n).toFixed(dec_places);
 }
@@ -22,7 +24,7 @@ exports.m3_cost_breakdown = function(volume_m3) {
 }
 
 exports.m3_to_sgd = function(volume_m3) {
-    return Object.values(exports.m3_cost_breakdown(volume_m3)).reduce((acc, v)=> acc + v, 0);
+    return my_round(Object.values(exports.m3_cost_breakdown(volume_m3)).reduce((acc, v)=> acc + v, 0));
 }
 
 exports.sgd_to_m3 = function(sgd) {
