@@ -9,10 +9,16 @@ exports.water_price = {
     beyond_40 : 3.69
 }
 
-exports.m3_breakdown = function(volume_m3) {
+exports.m3_breakdown = function(volume_m3, round=false) {
     let first_40 = Math.min(volume_m3, 40);
     let beyond_40 = volume_m3 - first_40;
-    return {first_40, beyond_40} 
+
+    if (round) {
+        return {first_40 : my_round(first_40),
+                beyond_40 : my_round(beyond_40)} 
+    }
+    
+    else return {first_40, beyond_40} 
 }
 
 exports.m3_cost_breakdown = function(volume_m3) {

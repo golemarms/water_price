@@ -1,0 +1,12 @@
+#first_40_sgd_component {
+    color : green
+}
+
+#beyond_40_sgd_component {
+    color : red
+}
+
+#sgd_sum {
+    color : black;
+    font-weight: bold;
+}

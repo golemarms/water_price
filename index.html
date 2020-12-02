@@ -1,10 +1,18 @@
 <script src="helper.js"></script>
 <script src="main.js"></script>
+<link rel="stylesheet" href="style.css">
 <label>
-    Volume of water
+    Volume of water (m<sup>3</sup>)
     <input type="number" name="volume_m3" id="volume_m3_input">
 </label>
 <label>
-    Monthly Bill
+    Monthly Bill ($)
     <input type="number" name="sgd" id="sgd_input">
 </label>
+
+<p id="sgd_equation">
+    <span id="first_40_sgd_component"></span>
+    <span id="sgd_equation_plus"></span>
+    <span id="beyond_40_sgd_component"></span>
+    <span id="sgd_sum"></span>
+</p>
