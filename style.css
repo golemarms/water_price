@@ -6,6 +6,10 @@
     color : red
 }
 
+#sgd_equation_plus {
+    font-weight: bolder;
+}
+
 #sgd_sum {
     color : black;
     font-weight: bold;
