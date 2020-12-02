@@ -6,6 +6,7 @@
   "directories": {
     "test": "test"
   },
+  "type": "module",
   "scripts": {
     "test": "mocha"
   },
@@ -15,6 +16,9 @@
     "browserfy": "^1.0.0",
     "browserify": "^17.0.0",
     "deep-equal": "^2.0.5",
+    "esm": "^3.2.25"
+  },
+  "devDependencies": {
     "mocha": "^8.2.1"
   }
 }
