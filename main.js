@@ -5,6 +5,20 @@ function elem(id) {
     return document.getElementById(id);
 };
 
+document.querySelector("#volume_m3_input")
+        .addEventListener("input", e => {
+                volume_m3 = parseFloat(e.target.value);
+                elem("sgd_input").value = h.m3_to_sgd(volume_m3, true);
+                update_equation();
+            });
+
+document.querySelector("#sgd_input")
+        .addEventListener("input", e => {
+                volume_m3 = h.sgd_to_m3(parseFloat(e.target.value));
+                elem("volume_m3_input").value = h.my_round(volume_m3);
+                update_equation();
+            });
+
 function set_html_and_tooltip(query_selector, html, tooltip_message="") {
     let elem = document.querySelector(query_selector)
     elem.innerHTML = html;
@@ -32,21 +46,6 @@ function update_equation() {
                          
 }
 
-window.onload = () => {
-    document.querySelector("#volume_m3_input")
-            .addEventListener("input", e => {
-                    volume_m3 = parseFloat(e.target.value);
-                    elem("sgd_input").value = h.m3_to_sgd(volume_m3, true);
-                    update_equation();
-                });
-
-    document.querySelector("#sgd_input")
-            .addEventListener("input", e => {
-                    volume_m3 = h.sgd_to_m3(parseFloat(e.target.value));
-                    elem("volume_m3_input").value = h.my_round(volume_m3);
-                    update_equation();
-                });
-}
 
 var tooltip = new Tooltip({
     theme: "light", // Selects one of the pre-defined tooltip styles - light or dark.
