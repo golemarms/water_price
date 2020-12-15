@@ -1,8 +1,8 @@
 import * as h from "./helper.js"
 let volume_m3 = 0;
 let density_data = h.density_data;
-let width = 200;
-let height = 50;
+let width = 600;
+let height = 200;
 let margin = ({top: 10, right: 0, bottom: 10, left: 0});
 
 function elem(id) {
@@ -69,7 +69,7 @@ let y_scale = d3.scaleLinear()
 let x_scale = d3.scaleBand()
             .domain(density_data.map(d => d.group))
             .range([margin.left, width - margin.right])
-            .padding(0.1)
+            .padding(0.2)
             .round(true)
 
 let x_scale_linear = vol => Math.min(d3.scaleLinear()
