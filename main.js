@@ -1,8 +1,8 @@
 import * as h from "./helper.js"
 let volume_m3 = 0;
 let density_data = h.density_data;
-let width = 600;
-let height = 200;
+let width = 200;
+let height = 50;
 let margin = ({top: 10, right: 0, bottom: 10, left: 0});
 
 function elem(id) {
