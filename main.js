@@ -1,31 +1,32 @@
 import * as h from "./helper.js"
 let volume_m3 = 0;
-let density_data = h.density_data
-let width = 640
-let height = 202
-let margin = ({top: 50, right: 0, bottom: 20, left: 30})
+let density_data = h.density_data;
+let width = 200;
+let height = 50;
+let margin = ({top: 10, right: 0, bottom: 10, left: 0});
 
 function elem(id) {
     return document.getElementById(id);
 };
 
-function update() {
-    update_histogram(volume_m3)
-    update_equation()
+function update(new_cons) {
+    update_histogram(new_cons);
+    update_morethan(new_cons);
+    update_equation(new_cons);
 }
 
 document.querySelector("#volume_m3_input")
         .addEventListener("input", e => {
                 volume_m3 = parseFloat(e.target.value);
                 elem("sgd_input").value = h.m3_to_sgd(volume_m3, true);
-                update();
+                update(volume_m3);
             });
 
 document.querySelector("#sgd_input")
         .addEventListener("input", e => {
                 volume_m3 = h.sgd_to_m3(parseFloat(e.target.value));
                 elem("volume_m3_input").value = h.my_round(volume_m3);
-                update();
+                update(volume_m3);
             });
 
 function set_html_and_tooltip(query_selector, html, tooltip_message="") {
@@ -38,20 +39,20 @@ function set_html_and_tooltip(query_selector, html, tooltip_message="") {
     else elem.removeAttribute("data-tooltip");
 }
 
-function update_equation() {
-    let vol = h.m3_breakdown(volume_m3, true);
+function update_equation(new_cons) {
+    let vol = h.m3_breakdown(new_cons, true);
     let prices = h.water_price;
-    let cost_breakdown = h.m3_cost_breakdown(volume_m3, true);
+    let cost_breakdown = h.m3_cost_breakdown(new_cons, true);
     set_html_and_tooltip("#first_40_sgd_component",
-                         volume_m3 ? `$${prices.first_40} ✖ ${vol.first_40.toLocaleString()} m<sup>3</sup>` : "",
-                         volume_m3 ? `Cost of first <b>${vol.first_40}</b> m<sup>3</sup> : <b>$${cost_breakdown.first_40}</b>` : "");
+                         new_cons ? `$${prices.first_40} ✖ ${vol.first_40.toLocaleString()} m<sup>3</sup>` : "",
+                         new_cons ? `Cost of first <b>${vol.first_40}</b> m<sup>3</sup> : <b>$${cost_breakdown.first_40}</b>` : "");
     set_html_and_tooltip("#sgd_equation_plus", vol.beyond_40 ? "+" : "");
     set_html_and_tooltip("#beyond_40_sgd_component",
                          vol.beyond_40 ? `$${prices.beyond_40} ✖ ${vol.beyond_40.toLocaleString()} m<sup>3</sup>` : "",
                          vol.beyond_40 ? `Cost of next <b>${vol.beyond_40}</b> m<sup>3</sup> : <b>$${cost_breakdown.beyond_40}</b>`: "");
     set_html_and_tooltip("#sgd_sum", 
-                         volume_m3 ? ` = $${h.m3_to_sgd(volume_m3, true).toLocaleString()}` : "",
-                         volume_m3 ? "Total cost" : "")
+                         new_cons ? ` = $${h.m3_to_sgd(new_cons, true).toLocaleString()}` : "",
+                         new_cons ? "Total cost" : "")
                          
 }
 
@@ -98,15 +99,25 @@ function update_histogram(new_cons) {
       .attr("width", x_scale.bandwidth())
       .attr("fill", d => d.color)
     
-    svg.append("g")
-       .append("text")
-       .attr("text-anchor", new_cons < 60 ? "start" : "end")
-       .append("tspan")
-       .html(`More than ${Math.round(lookup_pct(new_cons) * 100)}%  of SG households`)
-       .attr("x", x_scale_linear(new_cons))
-       .attr("y", 40)
+    // svg.append("g")
+    //    .append("text")
+    //    .attr("text-anchor", new_cons < 60 ? "start" : "end")
+    //    .append("tspan")
+    //    .html(`More than ${Math.round(lookup_pct(new_cons) * 100)}%  of SG households`)
+    //    .attr("x", x_scale_linear(new_cons))
+    //    .attr("y", 40)
     
     let div_node = d3.select("#histogram_div")
     div_node.html("")
     if (new_cons) div_node.append(() => svg.node())        
+}
+
+let color_morethan = d3.scaleSequential()
+                       .domain([100, 0])
+                       .interpolator(d3.interpolateRdYlGn)
+
+function update_morethan(new_cons) {
+    let pct = lookup_pct(new_cons) * 100
+    let style = `color: ${color_morethan(pct)}; text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black;`
+    document.querySelector("#morethan").innerHTML = new_cons ? `More than <span style="${style}"> ${Math.round(pct)}% </span> of SG households` : "";
 }
